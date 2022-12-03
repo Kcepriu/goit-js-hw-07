@@ -2,14 +2,7 @@ import { galleryItems } from './gallery-items.js';
 
 let activeModal = undefined;
 
-// Підключення скрипту і стилів бібліотеки модального вікна basicLightbox. Використовуй CDN сервіс jsdelivr і додай у проект посилання на мініфіковані (.min) файли бібліотеки.
-
-// Відкриття модального вікна по кліку на елементі галереї. Для цього ознайомся з документацією і прикладами.
-
-// Заміна значення атрибута src елемента <img> в модальному вікні перед відкриттям. Використовуй готову розмітку модального вікна із зображенням з прикладів бібліотеки basicLightbox.
-
-// https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js
-
+//! function for created gallery
 function createGallery(galleryItems) {
   const result = [];
   galleryItems.forEach(element => {
@@ -60,6 +53,7 @@ function addEventOnGalleryLink() {
   );
 }
 
+//! BasicLightbox
 function connectBasicLightbox() {
   addCssBasicLightbox();
   addScriptBasicLightbox();
@@ -106,6 +100,7 @@ function addCssBasicLightbox() {
   document.head.append(newLink);
 }
 
+//! Event Handlers
 function onImageClick(event) {
   if (event.target.nodeName !== 'IMG') {
     return;
@@ -137,6 +132,7 @@ function removeOnModalKeydown() {
   document.removeEventListener('keydown', onModalKeydown);
 }
 
+//! Inicialization script
 function initializationActions() {
   //1. Створення і рендер розмітки на підставі масиву даних galleryItems і наданого шаблону елемента галереї.
 
