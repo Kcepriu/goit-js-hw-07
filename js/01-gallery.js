@@ -3,7 +3,15 @@ import { galleryItems } from './gallery-items.js';
 let activeModal = undefined;
 
 //! function for created gallery
-function createGallery(galleryItems) {
+function createGallery() {
+  const elemGallery = document.querySelector('.gallery');
+
+  const arrayNewElem = createElementsGallery(galleryItems);
+
+  elemGallery.append(...arrayNewElem);
+}
+
+function createElementsGallery(galleryItems) {
   const result = [];
   galleryItems.forEach(element => {
     result.push(creareElementGalary(element));
@@ -43,6 +51,12 @@ function creareElementGalary({ preview, original, description } = {}) {
   newElemDiv.append(newElemA);
 
   return newElemDiv;
+}
+
+//! Add events
+function addEvenOnGallery() {
+  const elemGallery = document.querySelector('.gallery');
+  elemGallery.addEventListener('click', onImageClick);
 }
 
 function addEventOnGalleryLink() {
@@ -134,20 +148,16 @@ function removeOnModalKeydown() {
 
 //! Inicialization script
 function initializationActions() {
-  //1. Створення і рендер розмітки на підставі масиву даних galleryItems і наданого шаблону елемента галереї.
+  //* 1. Створення і рендер розмітки
+  const elemGallery = createGallery();
 
-  const elemGallery = document.querySelector('.gallery');
+  //* 2. Реалізація делегування на div.gallery
+  addEvenOnGallery();
 
-  const arrayNewElem = createGallery(galleryItems);
-
-  elemGallery.append(...arrayNewElem);
-
+  //* 3. Відключаю дію кліка по посиланню
   addEventOnGalleryLink();
 
-  //2. Реалізація делегування на div.gallery і отримання url великого зображення.
-  elemGallery.addEventListener('click', onImageClick);
-
-  //3. Підключення скрипту і стилів бібліотеки модального вікна basicLightbox.
+  //* 4. Підключення скрипту і стилів бібліотеки модального вікна basicLightbox.
   connectBasicLightbox();
 }
 
