@@ -6,9 +6,7 @@ let activeModal = undefined;
 function createGallery() {
   const elemGallery = document.querySelector('.gallery');
 
-  const arrayNewElem = createElementsGallery(galleryItems);
-
-  elemGallery.append(...arrayNewElem);
+  elemGallery.innerHTML = createElementsGallery(galleryItems).join(' ');
 }
 
 function createElementsGallery(galleryItems) {
@@ -21,36 +19,18 @@ function createElementsGallery(galleryItems) {
 }
 
 function creareElementGalary({ preview, original, description } = {}) {
-  // <div class="gallery__item">
-  //   <a class="gallery__link" href="large-image.jpg">
-  //     <img
-  //       class="gallery__image"
-  //       src="small-image.jpg"
-  //       data-source="large-image.jpg"
-  //       alt="Image description"
-  //     />
-  //   </a>
-  // </div>;
-
-  const newElemDiv = document.createElement('div');
-  const newElemA = document.createElement('a');
-  const newElemImg = document.createElement('img');
-
-  newElemDiv.classList.add('gallery__item');
-
-  newElemA.classList.add('gallery__link');
-  newElemA.href = original;
-  // newElemA.style.pointerEvents = 'none';
-
-  newElemImg.classList.add('gallery__image');
-  newElemImg.src = preview;
-  newElemImg.dataset.source = original;
-  newElemImg.alt = description;
-
-  newElemA.append(newElemImg);
-  newElemDiv.append(newElemA);
-
-  return newElemDiv;
+  return `
+  <div class="gallery__item">
+    <a class="gallery__link" href="${original}">
+      <img
+        class="gallery__image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+      />
+    </a>
+  </div>
+  `;
 }
 
 //! Add events
@@ -59,16 +39,9 @@ function addEvenOnGallery() {
   elemGallery.addEventListener('click', onImageClick);
 }
 
-function addEventOnGalleryLink() {
-  const elementsGalleryLink = document.querySelectorAll('.gallery__link');
-
-  elementsGalleryLink.forEach(elem =>
-    elem.addEventListener('click', onLinkClick),
-  );
-}
-
 //! BasicLightbox
 function connectBasicLightbox() {
+  //Це можна було запхатив index.html, але хотілося попрактикуватися із ручним додаванням
   addCssBasicLightbox();
   addScriptBasicLightbox();
 }
@@ -120,26 +93,26 @@ function onImageClick(event) {
     return;
   }
 
+  //* Відключаю дію кліка по посиланню
+  event.preventDefault();
+
   activeModal = basicLightbox.create(
     `
     <img src="${event.target.dataset.source}" width="800" height="600">`,
-    { onClose: removeOnModalKeydown },
+    { onShow: addOnModalKeydown, onClose: removeOnModalKeydown },
   );
-
-  document.addEventListener('keydown', onModalKeydown);
 
   activeModal.show();
 }
 
-function onLinkClick(event) {
-  event.preventDefault();
-}
-
 function onModalKeydown(even) {
   if (even.code === 'Escape') {
-    removeOnModalKeydown();
     activeModal.close();
   }
+}
+
+function addOnModalKeydown() {
+  document.addEventListener('keydown', onModalKeydown);
 }
 
 function removeOnModalKeydown() {
@@ -149,15 +122,12 @@ function removeOnModalKeydown() {
 //! Inicialization script
 function initializationActions() {
   //* 1. Створення і рендер розмітки
-  const elemGallery = createGallery();
+  createGallery();
 
   //* 2. Реалізація делегування на div.gallery
   addEvenOnGallery();
 
-  //* 3. Відключаю дію кліка по посиланню
-  addEventOnGalleryLink();
-
-  //* 4. Підключення скрипту і стилів бібліотеки модального вікна basicLightbox.
+  //* 3. Підключення скрипту і стилів бібліотеки модального вікна basicLightbox.
   connectBasicLightbox();
 }
 
