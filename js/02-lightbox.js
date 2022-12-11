@@ -27,21 +27,6 @@ function creareElementGalary({ preview, original, description } = {}) {
     `;
 }
 
-//! Add events
-function addEvenOnGallery() {
-  const elemGallery = document.querySelector('.gallery');
-  elemGallery.addEventListener('click', onImageClick);
-}
-
-//! Event Handlers
-function onImageClick(event) {
-  if (event.target.nodeName !== 'IMG') {
-    return;
-  }
-
-  gallery.open(event.target.parentNode);
-}
-
 //! gallery
 function connectSimpleLightbox() {
   gallery = new SimpleLightbox('.gallery .gallery__item', {
@@ -55,10 +40,7 @@ function initializationActions() {
   //* 1. Створення і рендер розмітки на підставі
   createGallery();
 
-  //* 2. Реалізація делегування на div.gallery
-  addEvenOnGallery();
-
-  //* 3. Підключаю галерею
+  //* 2. Підключаю галерею
   connectSimpleLightbox();
 }
 
